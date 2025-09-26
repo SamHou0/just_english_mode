@@ -5,7 +5,7 @@ setlocal
 set STARTUP_FOLDER=%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 
 :: Specify the path to your application's executable
-set APP_EXE=no_english_mode.exe
+set APP_EXE=just_english_mode.exe
 
 :: Copy the application to the Startup folder
 copy /Y "%APP_EXE%" "%STARTUP_FOLDER%"

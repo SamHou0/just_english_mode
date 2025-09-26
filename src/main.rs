@@ -36,14 +36,14 @@ unsafe extern "system" fn event_hook_callback(
         // Get the ime window handle
         let ime_hwnd = ImmGetDefaultIMEWnd(hwnd);
         // Switch the IME state
-        println!("Chinese input method detected, forcing Chinese mode.");
+        println!("Chinese input method detected, forcing English mode.");
         // Sometimes the message will miss if we don't sleep for a little while.
         thread::sleep(Duration::from_millis(50));
         SendMessageW(
             ime_hwnd,
             WM_IME_CONTROL,
             WPARAM(IMC_SETCONVERSIONMODE as usize),
-            LPARAM(1025), // Chinese
+            LPARAM(0), // English
         );
     }
 }
@@ -67,7 +67,7 @@ fn add_tray_icon(hwnd: HWND) -> windows::core::Result<()> {
 
     unsafe {
         // Convert the tooltip to a wide string
-        let tooltip = "NoEnglishMode\0";
+        let tooltip = "JustEnglishMode\0";
         for (i, c) in tooltip.encode_utf16().enumerate() {
             nid.szTip[i] = c;
         }
