@@ -32,7 +32,7 @@ unsafe extern "system" fn event_hook_callback(
     let hkl = GetKeyboardLayout(thread_id);
 
     // Check if the current IME status matches Chinese (0x804)~
-    if ((hkl.0 as u32 & 0xffff) == 0x804) && (hwnd.0 != std::ptr::null_mut()) {
+    if ((hkl.0 as u32 & 0xffff) == 0x804) && (hwnd.0 != 0) {
         // Get the ime window handle
         let ime_hwnd = ImmGetDefaultIMEWnd(hwnd);
         // Switch the IME state
@@ -180,13 +180,13 @@ fn main() -> windows::core::Result<()> {
             None,
         );
 
-        if hwnd.as_ref().map_or(true, |h| h.0.is_null()) {
+        if hwnd.0 == 0 {
             // Handle error
             return Err(windows::core::Error::from_win32());
         }
 
         // Add the tray icon using 'hwnd'
-        add_tray_icon(hwnd.unwrap())?;
+        add_tray_icon(hwnd)?;
 
         // Set the hook
         let hook = SetWinEventHook(
@@ -200,7 +200,7 @@ fn main() -> windows::core::Result<()> {
         );
 
         // Check if the hook was set successfully
-        if hook.0 == std::ptr::null_mut() {
+        if hook.0 == 0 {
             // Handle the error if the hook is not set
             println!("Failed to set hook!");
             return Err(Error::from_win32());
@@ -208,7 +208,7 @@ fn main() -> windows::core::Result<()> {
 
         // Message loop
         let mut message = MSG::default();
-        while GetMessageW(&mut message, HWND(std::ptr::null_mut()), 0, 0).into() {
+        while GetMessageW(&mut message, HWND(0), 0, 0).into() {
             TranslateMessage(&message);
             DispatchMessageW(&message);
         }

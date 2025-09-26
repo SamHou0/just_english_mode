@@ -17,5 +17,6 @@ fn main() {
     // println!("cargo:rustc-link-search=native={}", out_dir);
     // println!("cargo:rustc-link-arg=app.res");
 
-    println!("cargo:rustc-link-arg=assets/app.res");
+    // Comment out the resource file linking for now
+    // println!("cargo:rustc-link-arg=assets/app.res");
 }
